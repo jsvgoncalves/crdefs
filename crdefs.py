@@ -15,7 +15,9 @@ def from_file(f_name):
     fs = []
     with open(f_name) as f:
         for l in f.readlines():
-            if l.startswith('Files\\\\'):
+            # sometimes there's a special char in the beginning of the sentence
+            # so `startswith()` doesn't work. regex tbi
+            if 'Files\\\\' in l:
                 fs.append(l[7:9])
     return fs
 
