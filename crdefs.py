@@ -4,9 +4,9 @@ from os.path import isfile, join
 DIR = 'nodes'
 OUTPUT = 'cr-defs.tex'
 HEADER = "% !TEX root = main.tex\n\
-\\newcommand{\\crnumfmt}[1]{(N = #1)}\n\
-\\newcommand{\\crdefs}[2]{\n\
-    \\IfEqCase{#1}{\n"
+\\newcommand{\\crnumfmt}[2]{\\IfEqCase{#2}{{default}{}}[\\textit{#2}] (N=#1)}\n\
+\\newcommand{\\crdefs}[2][default]{\n\
+    \\IfEqCase{#2}{\n"
 FOOTER = "    }[\\PackageError{crdefs}{Undefined option to crdefs: #1}{}]\n\
 }\n"
 
@@ -33,7 +33,7 @@ def main():
     with open(OUTPUT, 'w') as f:
         f.write(HEADER)
         for data in o:
-            f.write('      {{{}}}{{\\crnumfmt{{{}}}}} \n'.format(
+            f.write('      {{{}}}{{\\crnumfmt{{{}}}{{#1}}}} \n'.format(
                 data['name'][6:-4],
                 len(data['files'])))
         f.write(FOOTER)
